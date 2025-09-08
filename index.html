@@ -8,5 +8,109 @@
         <script src="app.js" defer></script>
     </head>
 
-    <body></body>
+    <body>
+        <div class="app-container">
+            <!-- Header -->
+            <header class="header">
+                <h1>✨ Pokémon Shiny Hunting ✨</h1>
+                <div class="game-select">
+                    <label for="gameSelect">Select Game: </label>
+                    <select id="gameSelect">
+                        <optgroup label="Gen 2">
+                            <option value="Gold">Gold</option>
+                            <option value="Silver">Silver</option>
+                            <option value="Crystal">Crystal</option>
+                        </optgroup>
+                        <optgroup label="Gen 3">
+                            <option value="Ruby">Ruby</option>
+                            <option value="Sapphire">Sapphire</option>
+                            <option value="Emerald">Emerald</option>
+                            <option value="FireRed">FireRed</option>
+                            <option value="LeafGreen">LeafGreen</option>
+                        </optgroup>
+                        <optgroup label="Gen 4">
+                            <option value="Diamond">Diamond</option>
+                            <option value="Pearl">Pearl</option>
+                            <option value="Platinum">Platinum</option>
+                            <option value="HeartGold">HeartGold</option>
+                            <option value="SoulSilver">SoulSilver</option>
+                        </optgroup>
+                        <optgroup label="Gen 5">
+                            <option value="Black">Black</option>
+                            <option value="Black 2">Black 2</option>
+                            <option value="White">White</option>
+                            <option value="White 2">White 2</option>
+                        </optgroup>
+                        <optgroup label="Gen 6">
+                            <option value="X">X</option>
+                            <option value="Y">Y</option>
+                            <option value="Omega Ruby">Omega Ruby</option>
+                            <option value="Alpha Sapphire">
+                                Alpha Sapphire
+                            </option>
+                        </optgroup>
+                        <optgroup label="Gen 7">
+                            <option value="Sun">Sun</option>
+                            <option value="Moon">Moon</option>
+                            <option value="Ultra Sun">Ultra Sun</option>
+                            <option value="Ultra Moon">Ultra Moon</option>
+                        </optgroup>
+                        <optgroup label="Gen 8">
+                            <option value="Sword">Sword</option>
+                            <option value="Shield">Shield</option>
+                            <option value="Brilliant Diamond">
+                                Brilliant Diamond
+                            </option>
+                            <option value="Shining Pearl">Shining Pearl</option>
+                            <option value="Legends: Arceus">
+                                Legends: Arceus
+                            </option>
+                        </optgroup>
+                        <optgroup label="Gen 9">
+                            <option value="Scarlet">Scarlet</option>
+                            <option value="Violet">Violet</option>
+                        </optgroup>
+                    </select>
+                </div>
+            </header>
+
+            <!-- Left Column: Active Hunt -->
+            <section class="active-hunt">
+                <div class="inputs">
+                    <input
+                        id="pokemonName"
+                        type="text"
+                        placeholder="Pokémon Name..."
+                    />
+                    <input
+                        id="nickname"
+                        type="text"
+                        placeholder="Nickname... (Optional)"
+                    />
+                </div>
+
+                <img id="pokemon-img" />
+
+                <div class="counter-box">
+                    <h2>Resets / Encounters</h2>
+                    <div id="counter">0</div>
+                    <div class="buttons">
+                        <button id="increment">+</button>
+                        <button id="decrement">-</button>
+                        <button id="resetCount">Reset</button>
+                    </div>
+                </div>
+
+                <button id="foundShiny" class="save-btn found-shiny">
+                    🎉 Found a Shiny!
+                </button>
+            </section>
+
+            <!-- Right Column: Shiny Log -->
+            <section class="shiny-list">
+                <h2>Shiny Log</h2>
+                <ul id="shinyList"></ul>
+            </section>
+        </div>
+    </body>
 </html>
