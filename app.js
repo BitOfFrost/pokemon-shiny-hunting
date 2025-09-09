@@ -51,6 +51,11 @@ function saveSpriteCache() {
 }
 
 // ================================
+// Active Hunts Cache
+// ================================
+let activeHunts = JSON.parse(localStorage.getItem("activeHunts") || "{}");
+
+// ================================
 // Event Listeners
 // ================================
 
@@ -72,9 +77,11 @@ window.onload = () => {
 
   document.getElementById("foundShiny").addEventListener("click", saveShiny);
 
-  document
-    .getElementById("gameSelect")
-    .addEventListener("change", renderShinyList);
+  document.getElementById("gameSelect").addEventListener("change", () => {
+    saveCurrentGame();
+    renderShinyList();
+    loadActiveHunt();
+  });
 
   document.getElementById("pokemonName").addEventListener("input", () => {
     clearTimeout(debounceTimer);
@@ -214,21 +221,6 @@ function saveData() {
   localStorage.setItem("shinyTracker", JSON.stringify(shinyData));
 }
 
-function saveActiveHunt() {
-  const game = document.getElementById("gameSelect").value;
-  const name = document.getElementById("pokemonName").value.trim();
-  const nickname = document.getElementById("nickname").value.trim();
-
-  const activeHunt = {
-    game,
-    name,
-    nickname,
-    count: currentCount,
-  };
-
-  localStorage.setItem("activeHunt", JSON.stringify(activeHunt));
-}
-
 function loadData() {
   const data = localStorage.getItem("shinyTracker");
   if (data) {
@@ -274,21 +266,54 @@ function loadData() {
 }
 
 function loadActiveHunt() {
-  const data = localStorage.getItem("activeHunt");
-  if (!data) return;
+  loadCurrentGame();
+  const game = document.getElementById("gameSelect").value;
 
-  const { game, name, nickname, count } = JSON.parse(data);
-
-  // Restore dropdown, name, nickname, and count
-  if (game && document.getElementById("gameSelect").value !== game) {
-    document.getElementById("gameSelect").value = game;
-    renderShinyList();
+  if (!activeHunts[game]) {
+    // clear UI if no hunt in current game
+    document.getElementById("pokemonName").value = "";
+    document.getElementById("nickname").value = "";
+    currentCount = 0;
+    document.getElementById("counter").textContent = currentCount;
+    document.getElementById("pokemon-img").src = "";
+    return;
   }
+
+  const data = activeHunts[game];
+  const { name, nickname, count } = data;
+
   document.getElementById("pokemonName").value = name || "";
   document.getElementById("nickname").value = nickname || "";
   currentCount = count || 0;
   document.getElementById("counter").textContent = currentCount;
 
-  // Update sprite if name is present
   if (name) updatePokemonSprite();
+}
+
+function saveActiveHunt() {
+  const game = document.getElementById("gameSelect").value;
+  const name = document.getElementById("pokemonName").value.trim();
+  const nickname = document.getElementById("nickname").value.trim();
+
+  if (!name && !nickname && currentCount == 0) {
+    delete activeHunts[game];
+  } else {
+    activeHunts[game] = {
+      name,
+      nickname,
+      count: currentCount,
+    };
+  }
+
+  localStorage.setItem("activeHunts", JSON.stringify(activeHunts));
+}
+
+function loadCurrentGame() {
+  const game = localStorage.getItem("lastSelectedGame") || "Gold";
+  document.getElementById("gameSelect").value = game;
+}
+
+function saveCurrentGame() {
+  const game = document.getElementById("gameSelect").value;
+  localStorage.setItem("lastSelectedGame", game);
 }

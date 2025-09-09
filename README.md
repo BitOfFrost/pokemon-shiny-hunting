@@ -1,5 +1,7 @@
 # Pokemon Shiny Hunting
 
+> [Github Pages Link](https://bitoffrost.github.io/pokemon-shiny-hunting)
+
 This (web) application is being developed for my shiny hunting encounters. I want to keep track of how many attempts it takes and I ended up adding the ability to track what shinies are encountered per game.
 
 ## Legend
@@ -11,6 +13,10 @@ This (web) application is being developed for my shiny hunting encounters. I wan
 [x] Publish Repository
 [x] Publish GH-Pages
 [x] Align project to PokeAPI's Fair Use Policy
+
+#### Features
+[x] Support per-game active hunt saving
+[ ] Support saving last opened game
 
 ### Use
 WIP
