@@ -10,13 +10,13 @@ This (web) application is being developed for my shiny hunting encounters. I wan
 3. [Credits](#credits)
 
 ### Roadmap
-[x] Publish Repository
-[x] Publish GH-Pages
-[x] Align project to PokeAPI's Fair Use Policy
+ - [x] Publish Repository
+ - [x] Publish GH-Pages
+ - [x] Align project to PokeAPI's Fair Use Policy
 
 #### Features
-[x] Support per-game active hunt saving
-[ ] Support saving last opened game
+ - [x] Support per-game active hunt saving
+ - [x] Support saving last opened game
 
 ### Use
 WIP
