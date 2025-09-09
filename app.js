@@ -42,6 +42,15 @@ let shinyData = {
 let currentCount = 0;
 
 // ================================
+// Sprite Cache
+// ================================
+let spriteCache = JSON.parse(localStorage.getItem("spriteCache") || "{}");
+
+function saveSpriteCache() {
+  localStorage.setItem("spriteCache", JSON.stringify(spriteCache));
+}
+
+// ================================
 // Event Listeners
 // ================================
 
@@ -153,15 +162,28 @@ function renderShinyList() {
 }
 
 // ================================
-// Render Shiny Pokémon Image
+// Render Shiny Pokémon Image (with caching + validation)
 // ================================
 async function updatePokemonSprite() {
   const currentPokemonElement = document.getElementById("pokemonName");
   const pokemonImgElement = document.getElementById("pokemon-img");
 
   const name = currentPokemonElement.value.toLowerCase().trim();
+  // Validate input: only allow a–z
+  if (!/^[a-z]+$/.test(name) && name !== "") {
+    console.warn("Invalid Pokémon name entered:", name);
+    pokemonImgElement.src = "";
+    return;
+  }
+
   if (!name) {
     pokemonImgElement.src = "";
+    return;
+  }
+
+  // Check cache first
+  if (spriteCache[name]) {
+    pokemonImgElement.src = spriteCache[name];
     return;
   }
 
@@ -170,9 +192,13 @@ async function updatePokemonSprite() {
     if (!response.ok) throw new Error("Pokémon not found");
 
     const data = await response.json();
-    const shinySprite =
-      // data.sprites.other?.["official-artwork"]?.front_shiny ||
-      data.sprites.front_shiny || data.sprites.front_default;
+    const shinySprite = data.sprites.front_shiny || data.sprites.front_default;
+
+    if (shinySprite) {
+      // Save to cache
+      spriteCache[name] = shinySprite;
+      saveSpriteCache();
+    }
 
     pokemonImgElement.src = shinySprite || "";
   } catch (error) {
