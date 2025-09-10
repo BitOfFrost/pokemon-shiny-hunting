@@ -311,6 +311,7 @@ function saveActiveHunt() {
 function loadCurrentGame() {
   const game = localStorage.getItem("lastSelectedGame") || "Gold";
   document.getElementById("gameSelect").value = game;
+  renderShinyList();
 }
 
 function saveCurrentGame() {
