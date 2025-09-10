@@ -107,6 +107,9 @@ select:hover {
 
 /* Sprite image */
 #pokemon-img {
+    image-rendering: pixelated;
+    image-rendering: crisp-edges;
+    -ms-interpolation-mode: nearest-neighbor;
     width: 150px;
     height: 150px;
     object-fit: contain;
