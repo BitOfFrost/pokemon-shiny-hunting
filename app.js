@@ -58,11 +58,20 @@ let activeHunts = JSON.parse(localStorage.getItem("activeHunts") || "{}");
 // ================================
 // Event Listeners
 // ================================
-
 let debounceTimer;
 window.onload = () => {
   loadData();
   loadActiveHunt();
+
+  document.getElementById("counter").addEventListener("input", () => {
+    const counterEl = document.getElementById("counter");
+
+    let val = parseInt(counterEl.value);
+    if (isNaN(val) || val < 0) val = 0;
+    currentCount = val;
+
+    saveActiveHunt();
+  });
 
   document
     .getElementById("increment")
@@ -98,13 +107,13 @@ window.onload = () => {
 function updateCount(amount) {
   currentCount += amount;
   if (currentCount < 0) currentCount = 0;
-  document.getElementById("counter").textContent = currentCount;
+  document.getElementById("counter").value = currentCount;
   saveActiveHunt();
 }
 
 function resetCount() {
   currentCount = 0;
-  document.getElementById("counter").textContent = currentCount;
+  document.getElementById("counter").value = currentCount;
   saveActiveHunt();
 }
 
@@ -274,7 +283,7 @@ function loadActiveHunt() {
     document.getElementById("pokemonName").value = "";
     document.getElementById("nickname").value = "";
     currentCount = 0;
-    document.getElementById("counter").textContent = currentCount;
+    document.getElementById("counter").value = currentCount;
     document.getElementById("pokemon-img").src = "";
     return;
   }
@@ -285,7 +294,7 @@ function loadActiveHunt() {
   document.getElementById("pokemonName").value = name || "";
   document.getElementById("nickname").value = nickname || "";
   currentCount = count || 0;
-  document.getElementById("counter").textContent = currentCount;
+  document.getElementById("counter").value = currentCount;
 
   if (name) updatePokemonSprite();
 }
