@@ -391,7 +391,11 @@ function updateOdds() {
   oddsDisplay.textContent = `Cumulative Odds: ${percent}% (1 in ${rate})`;
 
   // color shift
-  // Map odds% to hue: 0 = red, 60 = yellow, 120 = green
-  const hue = Math.min(chance * 100 * (120 / 63.21), 120);
+  const hue = getHue(chance, rate);
   oddsDisplay.style.color = `hsl(${hue}, 80%, 50%)`;
+}
+
+function getHue(chance, rate) {
+  const maxChance = 1 - Math.pow(1 - 1 / rate, rate);
+  return Math.min(120, (chance / maxChance) * 120);
 }
