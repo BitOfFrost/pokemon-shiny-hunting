@@ -25,6 +25,7 @@ This (web) application is being developed for my shiny hunting encounters. I wan
  - [x] Support per-game active hunt saving
  - [x] Support saving last opened game
  - [x] Support input on counter
+ - [ ] Show chance of finding a shiny
 
 ### Use
 1. Select the game you are shiny hunting, in top-right (desktop), or top (mobile),

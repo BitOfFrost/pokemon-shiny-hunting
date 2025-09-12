@@ -70,6 +70,7 @@ window.onload = () => {
     if (isNaN(val) || val < 0) val = 0;
     currentCount = val;
 
+    updateOdds();
     saveActiveHunt();
   });
 
@@ -88,6 +89,7 @@ window.onload = () => {
 
   document.getElementById("gameSelect").addEventListener("change", () => {
     saveCurrentGame();
+    updateOdds();
     renderShinyList();
     loadActiveHunt();
   });
@@ -108,12 +110,16 @@ function updateCount(amount) {
   currentCount += amount;
   if (currentCount < 0) currentCount = 0;
   document.getElementById("counter").value = currentCount;
+
+  updateOdds();
   saveActiveHunt();
 }
 
 function resetCount() {
   currentCount = 0;
   document.getElementById("counter").value = currentCount;
+
+  updateOdds();
   saveActiveHunt();
 }
 
@@ -158,9 +164,16 @@ function renderShinyList() {
 
   if (!shinyData[game]) shinyData[game] = [];
 
+  const rate = shinyRates[game] || 4096;
+
   shinyData[game].forEach((shiny, index) => {
     const item = document.createElement("li");
-    item.textContent = `${shiny.name} ${shiny.nickname ? "(" + shiny.nickname + ")" : ""} — ${shiny.count} resets`;
+
+    // calculate odds of 1 shiny after n resets
+    const odds = 1 - Math.pow(1 - 1 / rate, shiny.count);
+    const percent = (odds * 100).toFixed(2);
+
+    item.textContent = `${shiny.name} ${shiny.nickname ? "(" + shiny.nickname + ")" : ""} — ${shiny.count} resets (~${percent}%) [${game}]`;
 
     // Optional delete button
     const delBtn = document.createElement("button");
@@ -295,6 +308,7 @@ function loadActiveHunt() {
   document.getElementById("nickname").value = nickname || "";
   currentCount = count || 0;
   document.getElementById("counter").value = currentCount;
+  updateOdds();
 
   if (name) updatePokemonSprite();
 }
@@ -326,4 +340,58 @@ function loadCurrentGame() {
 function saveCurrentGame() {
   const game = document.getElementById("gameSelect").value;
   localStorage.setItem("lastSelectedGame", game);
+}
+
+// ================================
+// Shiny Odds
+// ================================
+let shinyRates = {
+  Gold: 8192,
+  Silver: 8192,
+  Crystal: 8192,
+  Ruby: 8192,
+  Sapphire: 8192,
+  Emerald: 8192,
+  FireRed: 8192,
+  LeafGreen: 8192,
+  Diamond: 8192,
+  Pearl: 8192,
+  Platinum: 8192,
+  HeartGold: 8192,
+  SoulSilver: 8192,
+  Black: 8192,
+  "Black 2": 8192,
+  White: 8192,
+  "White 2": 8192,
+  X: 4096,
+  Y: 4096,
+  "Omega Ruby": 4096,
+  "Alpha Sapphire": 4096,
+  Sun: 4096,
+  Moon: 4096,
+  "Ultra Sun": 4096,
+  "Ultra Moon": 4096,
+  Sword: 4096,
+  Shield: 4096,
+  "Brilliant Diamond": 4096,
+  "Shining Pearl": 4096,
+  "Legends: Arceus": 4096,
+  Scarlet: 4096,
+  Violet: 4096,
+};
+
+function updateOdds() {
+  const game = document.getElementById("gameSelect").value;
+  const rate = shinyRates[game] || 4096; // fallback if not found
+
+  const chance = 1 - Math.pow(1 - 1 / rate, currentCount);
+  const percent = (chance * 100).toFixed(2);
+
+  const oddsDisplay = document.getElementById("odds");
+  oddsDisplay.textContent = `Cumulative Odds: ${percent}% (1 in ${rate})`;
+
+  // color shift
+  // Map odds% to hue: 0 = red, 60 = yellow, 120 = green
+  const hue = Math.min(chance * 100 * (120 / 63.21), 120);
+  oddsDisplay.style.color = `hsl(${hue}, 80%, 50%)`;
 }
